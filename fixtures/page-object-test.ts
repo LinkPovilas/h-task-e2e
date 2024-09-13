@@ -1,37 +1,32 @@
 import { test as base } from '@playwright/test';
-import { ApiKeyForm } from 'page-objects/api-key/api-key-form';
-import { ApiKeyTable } from 'page-objects/api-key/api-key-table';
-import { EditApiKeyModal } from 'page-objects/api-key/edit-api-key-modal';
-import { SignInForm } from 'page-objects/authentication/sign-in-form';
-import { NavigationBar } from 'page-objects/navigation/navigation-bar';
-import { UserDropdownMenu } from 'page-objects/navigation/user-dropdown-menu';
+import { CreateAccountForm } from 'page-objects/authentication/create-account-form';
+import { CookieConsent } from 'page-objects/consent/cookie-consent';
+import { PaymentOverviewForm } from 'page-objects/cart/payment-overview-form';
+import { WebHostingPriceCard } from 'page-objects/web-hosting-plan/web-hosting-price-card';
+import { WebHostingPeriodCard } from 'page-objects/web-hosting-plan/web-hosting-period-card';
 
-interface PageObject {
-  signInForm: SignInForm;
-  userDropdownMenu: UserDropdownMenu;
-  navigationBar: NavigationBar;
-  apiKeyForm: ApiKeyForm;
-  apiKeyTable: ApiKeyTable;
-  editApiKeyModal: EditApiKeyModal;
+interface PageObjectFixture {
+  cookieConsent: CookieConsent;
+  webHostingPriceCard: WebHostingPriceCard;
+  webHostingPeriodCard: WebHostingPeriodCard;
+  createAccountForm: CreateAccountForm;
+  paymentOverviewForm: PaymentOverviewForm;
 }
 
-export const test = base.extend<PageObject>({
-  signInForm: async ({ page }, use) => {
-    await use(new SignInForm(page));
+export const test = base.extend<PageObjectFixture>({
+  cookieConsent: async ({ page }, use) => {
+    await use(new CookieConsent(page));
   },
-  userDropdownMenu: async ({ page }, use) => {
-    await use(new UserDropdownMenu(page));
+  webHostingPriceCard: async ({ page }, use) => {
+    await use(new WebHostingPriceCard(page));
   },
-  navigationBar: async ({ page, userDropdownMenu }, use) => {
-    await use(new NavigationBar(page, userDropdownMenu));
+  webHostingPeriodCard: async ({ page }, use) => {
+    await use(new WebHostingPeriodCard(page));
   },
-  apiKeyForm: async ({ page }, use) => {
-    await use(new ApiKeyForm(page));
+  createAccountForm: async ({ page }, use) => {
+    await use(new CreateAccountForm(page));
   },
-  apiKeyTable: async ({ page }, use) => {
-    await use(new ApiKeyTable(page));
-  },
-  editApiKeyModal: async ({ page }, use) => {
-    await use(new EditApiKeyModal(page));
+  paymentOverviewForm: async ({ page }, use) => {
+    await use(new PaymentOverviewForm(page));
   }
 });

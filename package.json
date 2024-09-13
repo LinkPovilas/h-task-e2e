@@ -1,5 +1,5 @@
 {
-  "name": "playwright-boilerplate",
+  "name": "h-task-e2e",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -18,7 +18,8 @@
   "description": "",
   "devDependencies": {
     "@eslint/js": "^9.7.0",
-    "@playwright/test": "^1.45.1",
+    "@faker-js/faker": "^9.0.0",
+    "@playwright/test": "^1.46.1",
     "@types/eslint__js": "^8.42.3",
     "@types/node": "^20.14.10",
     "eslint": "^9.0.0",

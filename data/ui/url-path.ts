@@ -1,4 +1,3 @@
 export const urlPath = {
-  homePage: '/',
-  apiKeysPage: '/api_keys'
+  homePage: '/'
 } as const;

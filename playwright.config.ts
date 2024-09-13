@@ -1,7 +1,6 @@
 import { defineConfig, devices } from '@playwright/test';
 import { env } from 'env';
 
-export const authFilePath = 'playwright/.auth/user.json';
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
@@ -28,19 +27,20 @@ export default defineConfig({
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
     /* Record video only when retrying a test for the first time. */
-    video: 'on-first-retry'
+    video: 'on-first-retry',
+    /* Slows down Playwright operations by the specified amount of milliseconds */
+    launchOptions: {
+      slowMo: 50
+    }
   },
 
   /* Configure projects for major browsers */
   projects: [
-    { name: 'auth-setup', testMatch: /auth\.setup\.ts/ },
     {
       name: 'chromium',
       use: {
-        ...devices['Desktop Chrome'],
-        storageState: authFilePath
-      },
-      dependencies: ['auth-setup']
+        ...devices['Desktop Chrome']
+      }
     }
   ]
 
