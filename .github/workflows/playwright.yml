@@ -24,6 +24,7 @@ jobs:
         run: npm run lint
 
   test:
+    if: ${{ always() }}
     needs: lint
     name: Test
     timeout-minutes: 60
