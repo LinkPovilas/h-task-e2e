@@ -1,15 +1,5 @@
 import { PageObject } from 'page-objects/page-object';
 
-export interface CustomerDetails {
-  firstName?: string;
-  lastName?: string;
-  phoneNumber: string;
-  regionOrProvince?: string;
-  city?: string;
-  streetAddress?: string;
-  zipCode?: string;
-}
-
 export interface CardDetails {
   name: string;
   cardNumber: string;
@@ -23,14 +13,10 @@ enum CardFrameIndex {
   CARD_CVC
 }
 
-export class PaymentOverviewForm extends PageObject {
+export class CardPaymentForm extends PageObject {
   private readonly cardFrameLocator = this.page.frameLocator(
     '.processout-field-cc-iframe'
   );
-
-  get phoneNumberField() {
-    return this.page.locator('#phone-number-input').getByRole('textbox');
-  }
 
   get nameOnCardField() {
     return this.page.getByPlaceholder('Name on card');
@@ -54,14 +40,6 @@ export class PaymentOverviewForm extends PageObject {
       .getByLabel('Credit or debit card CVC');
   }
 
-  get submitSecurePaymentButton() {
-    return this.page.getByRole('button', { name: 'Submit secure payment' });
-  }
-
-  async enterPhoneNumber(phoneNumber: string) {
-    await this.phoneNumberField.fill(phoneNumber);
-  }
-
   async enterNameOnCard(name: string) {
     await this.nameOnCardField.fill(name);
   }
@@ -76,14 +54,6 @@ export class PaymentOverviewForm extends PageObject {
 
   async enterCardVerificationCode(cvc: string) {
     await this.cardVerificationCodeField.fill(cvc);
-  }
-
-  async clickSubmitSecurePayment() {
-    await this.submitSecurePaymentButton.click();
-  }
-
-  async enterCustomerDetails({ phoneNumber }: CustomerDetails) {
-    await this.enterPhoneNumber(phoneNumber);
   }
 
   async enterCardDetails({

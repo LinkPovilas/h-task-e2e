@@ -30,7 +30,7 @@ export default defineConfig({
     video: 'on-first-retry',
     /* Slows down Playwright operations by the specified amount of milliseconds */
     launchOptions: {
-      slowMo: 50
+      slowMo: 100
     }
   },
 

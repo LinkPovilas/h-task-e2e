@@ -1,7 +1,8 @@
-import { randomFakeUser, testCardData } from 'data/ui/test-user-data';
+import { randomFakeUser } from 'resources/test-user-data';
 import { it } from 'fixtures/fixtures';
 import { WebHostingPlan } from 'page-objects/web-hosting-plan/web-hosting-price-card';
 import { WebHostingDuration } from 'page-objects/web-hosting-plan/web-hosting-period-card';
+import { PaymentMethod } from 'page-objects/payment/payment-method-list';
 
 it.describe('Web hosting plan cart', () => {
   it.describe('selecting web hosting plan from homepage', () => {
@@ -18,7 +19,7 @@ it.describe('Web hosting plan cart', () => {
     });
   });
 
-  it.describe.only('selecting web hosting duration', () => {
+  it.describe('selecting web hosting duration', () => {
     [WebHostingPlan.PREMIUM].forEach((plan) => {
       [WebHostingDuration.TWENTY_FOUR_MONTHS].forEach((duration) => {
         it(`should allow to initiate ${duration} ${WebHostingPlan[plan]} plan order`, async ({
@@ -27,7 +28,8 @@ it.describe('Web hosting plan cart', () => {
           chooseWebHostingDuration,
           enterCreateAccountDetails,
           enterCustomerDetails,
-          enterCardDetails,
+          ensureDefaultPaymentMethodIsSelected,
+          selectPaymentMethod,
           submitOrder
         }) => {
           const { email, password, phoneNumber } = randomFakeUser();
@@ -35,9 +37,10 @@ it.describe('Web hosting plan cart', () => {
           await goToWebHostingCartPage(plan);
           await ensureWebHostingPlanIsSelected(plan);
           await chooseWebHostingDuration(duration);
+          await ensureDefaultPaymentMethodIsSelected();
           await enterCreateAccountDetails({ email, password });
+          await selectPaymentMethod(PaymentMethod.PAYPAL);
           await enterCustomerDetails({ phoneNumber });
-          await enterCardDetails(testCardData());
           await submitOrder();
         });
       });

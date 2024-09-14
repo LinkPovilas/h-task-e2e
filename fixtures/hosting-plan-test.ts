@@ -2,13 +2,11 @@ import { WebHostingPlan } from 'page-objects/web-hosting-plan/web-hosting-price-
 import { test as base } from './page-object-test';
 import { expect } from '@playwright/test';
 import { WebHostingDuration } from 'page-objects/web-hosting-plan/web-hosting-period-card';
-import {
-  CardDetails,
-  CustomerDetails
-} from 'page-objects/payment/payment-overview-form';
 import { UserCredentials } from 'page-objects/authentication/create-account-form';
-import { route } from 'data/api/route';
 import { noticeMessage, webHostingPlanMessages } from 'data/ui/messages';
+import { CustomerDetails } from 'page-objects/payment/cart-estimate-details-form';
+import { CardDetails } from 'page-objects/payment/card-payment-form';
+import { PaymentMethod } from 'page-objects/payment/payment-method-list';
 
 interface SubscriptionPlanPurchaseFixture {
   chooseWebHostingPlan: (plan: WebHostingPlan) => Promise<void>;
@@ -17,6 +15,8 @@ interface SubscriptionPlanPurchaseFixture {
   enterCreateAccountDetails: (
     userCredentials: UserCredentials
   ) => Promise<void>;
+  ensureDefaultPaymentMethodIsSelected: () => Promise<void>;
+  selectPaymentMethod: (paymentMethod?: PaymentMethod) => Promise<void>;
   enterCustomerDetails: (customerDetails: CustomerDetails) => Promise<void>;
   enterCardDetails: (cardDetails: CardDetails) => Promise<void>;
   submitOrder: () => Promise<void>;
@@ -55,22 +55,31 @@ export const test = base.extend<SubscriptionPlanPurchaseFixture>({
       await createAccountForm.enterCredentials(userCredentials);
     });
   },
-  enterCustomerDetails: async ({ paymentOverviewForm }, use) => {
-    await use(async (customerDetails: CustomerDetails) => {
-      await paymentOverviewForm.enterCustomerDetails(customerDetails);
-    });
-  },
-  enterCardDetails: async ({ paymentOverviewForm }, use) => {
-    await use(async (cardDetails: CardDetails) => {
-      await paymentOverviewForm.enterCardDetails(cardDetails);
-    });
-  },
-  submitOrder: async ({ page, paymentOverviewForm, backdropLoader }, use) => {
+  ensureDefaultPaymentMethodIsSelected: async ({ paymentMethodList }, use) => {
     await use(async () => {
-      const responsePromise = page.waitForResponse(`**${route.createOrder()}`);
-      await paymentOverviewForm.clickSubmitSecurePayment();
-      const response = await responsePromise;
-      expect(response.ok(), 'should create order').toBeTruthy();
+      await expect(paymentMethodList.creditCardMethod).toBeChecked();
+    });
+  },
+  selectPaymentMethod: async ({ paymentMethodList }, use) => {
+    await use(async (paymentMethod?: PaymentMethod) => {
+      await paymentMethodList.selectPaymentMethod(paymentMethod);
+    });
+  },
+  enterCustomerDetails: async ({ paymentOverview }, use) => {
+    await use(async (customerDetails: CustomerDetails) => {
+      await paymentOverview.cartEstimateDetailsForm.enterCustomerDetails(
+        customerDetails
+      );
+    });
+  },
+  enterCardDetails: async ({ paymentOverview }, use) => {
+    await use(async (cardDetails: CardDetails) => {
+      await paymentOverview.cardPaymentForm.enterCardDetails(cardDetails);
+    });
+  },
+  submitOrder: async ({ paymentOverview, backdropLoader }, use) => {
+    await use(async () => {
+      await paymentOverview.clickSubmitSecurePayment();
       await expect(backdropLoader.circularSpinner).toBeVisible();
     });
   }

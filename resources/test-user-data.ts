@@ -10,7 +10,7 @@ export const randomFakeUser = () => ({
 const cardExpirationDate = () => `11${(new Date().getFullYear() % 100) + 1}`;
 
 export const testCardData = () => ({
-  name: 'Test User',
+  name: faker.person.fullName(),
   cardNumber: '4242424242424242',
   expirationDate: cardExpirationDate(),
   cvc: faker.string.numeric({ length: 3, allowLeadingZeros: true })
