@@ -30,8 +30,6 @@ Example:
 # .env
 BASE_URL=https://www.your-website.eu
 CART_API_URL=https://checkout.your-website.eu
-USER_EMAIL=myuser@gmail.com
-USER_PASSWORD=My@Password24
 ```
 
 # Setup
