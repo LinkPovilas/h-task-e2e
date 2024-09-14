@@ -1,6 +1,6 @@
 import { PageObject } from 'page-objects/page-object';
 
-export class CookieConsent extends PageObject {
+export class CookieConsentBanner extends PageObject {
   get header() {
     return this.page.getByRole('heading', {
       name: 'We care about your privacy'

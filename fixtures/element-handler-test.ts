@@ -2,17 +2,17 @@ import { expect } from '@playwright/test';
 import { test as base } from './page-object-test';
 
 interface ElementHandlerFixture {
-  acceptCookieConsent: void;
+  acceptcookieConsentBanner: void;
 }
 
 export const test = base.extend<ElementHandlerFixture>({
-  acceptCookieConsent: [
-    async ({ page, cookieConsent }, use) => {
+  acceptcookieConsentBanner: [
+    async ({ page, cookieConsentBanner }, use) => {
       await page.addLocatorHandler(
-        cookieConsent.header,
+        cookieConsentBanner.header,
         async () => {
-          await cookieConsent.clickAccept();
-          await expect(cookieConsent.header).not.toBeVisible();
+          await cookieConsentBanner.clickAccept();
+          await expect(cookieConsentBanner.header).not.toBeVisible();
         },
         {
           times: 1

@@ -3,6 +3,7 @@ import { test as base } from './api-request-test';
 import { expect } from '@playwright/test';
 import { CreateCartPayload } from 'data/api/interfaces/create-cart-interface';
 import { WebHostingPlan } from 'page-objects/web-hosting-plan/web-hosting-price-card';
+import { urlPath } from 'data/ui/url-path';
 
 interface NavigationFixture {
   goToHomePage: () => Promise<void>;
@@ -18,12 +19,13 @@ const webHostingPlanSlugs = new Map<WebHostingPlan, string>([
 export const test = base.extend<NavigationFixture>({
   goToHomePage: async ({ page }, use) => {
     await use(async () => {
-      await page.goto('/');
+      await page.goto(urlPath.homePage);
     });
   },
   goToWebHostingCartPage: async ({ page, createCart }, use) => {
     await use(async (subscriptionPlan: WebHostingPlan) => {
       const slug = webHostingPlanSlugs.get(subscriptionPlan)!;
+
       const payload: CreateCartPayload = {
         products: [
           {

@@ -1,8 +1,11 @@
-export const alertMessage = {
-  signInOrSignUp: 'You need to sign in or sign up before continuing.'
-} as const;
+import { WebHostingPlan } from 'page-objects/web-hosting-plan/web-hosting-price-card';
 
 export const noticeMessage = {
-  signedInSuccessfully: 'Signed in successfully.',
-  apiKeyEditedSuccessfully: 'API key was edited successfully'
-};
+  completeYourOrder: 'You’re almost there! Complete your order'
+} as const;
+
+export const webHostingPlanMessages = new Map<WebHostingPlan, string>([
+  [WebHostingPlan.PREMIUM, 'Premium Web Hosting'],
+  [WebHostingPlan.BUSINESS, 'Business Web Hosting'],
+  [WebHostingPlan.CLOUD_STARTUP, 'Cloud Startup']
+]);

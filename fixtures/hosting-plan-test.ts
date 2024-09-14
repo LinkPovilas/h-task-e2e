@@ -5,8 +5,10 @@ import { WebHostingDuration } from 'page-objects/web-hosting-plan/web-hosting-pe
 import {
   CardDetails,
   CustomerDetails
-} from 'page-objects/cart/payment-overview-form';
+} from 'page-objects/payment/payment-overview-form';
 import { UserCredentials } from 'page-objects/authentication/create-account-form';
+import { route } from 'data/api/route';
+import { noticeMessage, webHostingPlanMessages } from 'data/ui/messages';
 
 interface SubscriptionPlanPurchaseFixture {
   chooseWebHostingPlan: (plan: WebHostingPlan) => Promise<void>;
@@ -17,14 +19,8 @@ interface SubscriptionPlanPurchaseFixture {
   ) => Promise<void>;
   enterCustomerDetails: (customerDetails: CustomerDetails) => Promise<void>;
   enterCardDetails: (cardDetails: CardDetails) => Promise<void>;
-  clickSubmitSecurePayment: () => Promise<void>;
+  submitOrder: () => Promise<void>;
 }
-
-const webHostingPlanMessages = new Map<WebHostingPlan, string>([
-  [WebHostingPlan.PREMIUM, 'Selected plan: Premium Web Hosting'],
-  [WebHostingPlan.BUSINESS, 'Selected plan: Business Web Hosting'],
-  [WebHostingPlan.CLOUD_STARTUP, 'Selected plan: Cloud Startup']
-]);
 
 export const test = base.extend<SubscriptionPlanPurchaseFixture>({
   chooseWebHostingPlan: async (
@@ -34,14 +30,16 @@ export const test = base.extend<SubscriptionPlanPurchaseFixture>({
     await use(async (plan: WebHostingPlan) => {
       await pricingCard.clickChoosePlan(plan);
       await expect(
-        page.getByText('You’re almost there! Complete your order')
+        page.getByText(noticeMessage.completeYourOrder)
       ).toBeVisible();
     });
   },
   ensureWebHostingPlanIsSelected: async ({ page }, use) => {
     await use(async (plan: WebHostingPlan) => {
       const message = webHostingPlanMessages.get(plan)!;
-      await expect(page.getByText(message)).toHaveCount(1);
+      await expect(
+        page.getByRole('heading', { name: message, exact: true })
+      ).toBeVisible();
     });
   },
   chooseWebHostingDuration: async (
@@ -67,9 +65,13 @@ export const test = base.extend<SubscriptionPlanPurchaseFixture>({
       await paymentOverviewForm.enterCardDetails(cardDetails);
     });
   },
-  clickSubmitSecurePayment: async ({ paymentOverviewForm }, use) => {
+  submitOrder: async ({ page, paymentOverviewForm, backdropLoader }, use) => {
     await use(async () => {
+      const responsePromise = page.waitForResponse(`**${route.createOrder()}`);
       await paymentOverviewForm.clickSubmitSecurePayment();
+      const response = await responsePromise;
+      expect(response.ok(), 'should create order').toBeTruthy();
+      await expect(backdropLoader.circularSpinner).toBeVisible();
     });
   }
 });
