@@ -24,7 +24,8 @@ jobs:
         run: npm run lint
 
   test:
-    if: always() && ${{ needs.lint.outputs.result == 'skipped' || needs.lint.result == 'success' }}
+    if: ${{ always() }}
+    needs: lint
     name: Test
     timeout-minutes: 60
     runs-on: ubuntu-latest
