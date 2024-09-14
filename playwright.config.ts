@@ -1,7 +1,6 @@
 import { defineConfig, devices } from '@playwright/test';
 import { env } from 'env';
 
-export const authFilePath = 'playwright/.auth/user.json';
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
@@ -16,7 +15,7 @@ export default defineConfig({
   /* Opt out of parallel tests on CI. */
   workers: env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: env.CI ? 'blob' : 'html',
+  reporter: 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
@@ -28,19 +27,20 @@ export default defineConfig({
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
     /* Record video only when retrying a test for the first time. */
-    video: 'on-first-retry'
+    video: 'on-first-retry',
+    /* Slows down Playwright operations by the specified amount of milliseconds */
+    launchOptions: {
+      slowMo: 100
+    }
   },
 
   /* Configure projects for major browsers */
   projects: [
-    { name: 'auth-setup', testMatch: /auth\.setup\.ts/ },
     {
       name: 'chromium',
       use: {
-        ...devices['Desktop Chrome'],
-        storageState: authFilePath
-      },
-      dependencies: ['auth-setup']
+        ...devices['Desktop Chrome']
+      }
     }
   ]
 
