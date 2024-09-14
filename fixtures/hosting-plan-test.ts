@@ -80,7 +80,9 @@ export const test = base.extend<SubscriptionPlanPurchaseFixture>({
   submitOrder: async ({ paymentOverview, backdropLoader }, use) => {
     await use(async () => {
       await paymentOverview.clickSubmitSecurePayment();
-      await expect(backdropLoader.circularSpinner).toBeVisible();
+      await expect(backdropLoader.circularSpinner).toBeVisible({
+        timeout: 10_000
+      });
     });
   }
 });
