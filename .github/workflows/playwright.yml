@@ -11,6 +11,8 @@ jobs:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     name: Lint
+    outputs:
+      lint_skipped: ${{ steps.lint_skipped.outputs.skipped }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -24,7 +26,7 @@ jobs:
         run: npm run lint
 
   test:
-    needs: lint
+    if: ${{ needs.lint.outputs.lint_skipped == 'true' || needs.lint.result == 'success' }}
     name: Test
     timeout-minutes: 60
     runs-on: ubuntu-latest
