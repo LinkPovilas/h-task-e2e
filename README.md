@@ -1,6 +1,6 @@
-# Playwright boilerplate
+# Description
 
-A Playwright boilerplate project that provides a basic structure and pre-configured setup. It includes the necessary files, directories, and configurations needed to get a project up and running quickly, without having to set up everything from scratch.
+This repository contains the implementation of a test automation task.
 
 # Table Of Contents
 
@@ -22,24 +22,16 @@ A Playwright boilerplate project that provides a basic structure and pre-configu
 
 # Prerequisites
 
-Adjust values based on the test environment:
-
-1. An active account. ([Register in Prod](https://home.openweathermap.org/users/sign_up))
-2. An activated API key. ([My API Keys in Prod](https://home.openweathermap.org/api_keys))
-3. A home page URL. Prod: "https://home.openweathermap.org/"
-4. A base API URL. Prod: "https://api.openweathermap.org/"
-
-Copy the `.env.example` file, rename it to `.env` and fill in the values.
+Copy the `.env.example` file, rename it to `.env` and fill in the values. (Terminal command: `cp .env.example .env`)
 
 Example:
 
 ```Shell
 # .env
-API_KEY=123456
-BASE_URL=https://home.openweathermap.org/
-BASE_API_URL=https://api.openweathermap.org/
-USER_EMAIL=test@gmail.com
-USER_PASSWORD=Test@2024_UI_API
+BASE_URL=https://www.your-website.eu
+CART_API_URL=https://checkout.your-website.eu
+USER_EMAIL=myuser@gmail.com
+USER_PASSWORD=My@Password24
 ```
 
 # Setup
