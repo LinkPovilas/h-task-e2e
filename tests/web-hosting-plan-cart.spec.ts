@@ -3,6 +3,7 @@ import { it } from 'fixtures/fixtures';
 import { WebHostingPlan } from 'page-objects/web-hosting-plan/web-hosting-price-card';
 import { WebHostingDuration } from 'page-objects/web-hosting-plan/web-hosting-period-card';
 import { PaymentMethod } from 'page-objects/payment/payment-method-list';
+import { Country } from 'data/ui/country';
 
 it.describe('Web hosting plan cart', () => {
   it.describe('selecting web hosting plan from homepage', () => {
@@ -40,7 +41,11 @@ it.describe('Web hosting plan cart', () => {
           await ensureDefaultPaymentMethodIsSelected();
           await enterCreateAccountDetails({ email, password });
           await selectPaymentMethod(PaymentMethod.PAYPAL);
-          await enterCustomerDetails({ phoneNumber });
+          await enterCustomerDetails({
+            phoneNumberPrefixOrCountry: Country.LITHUANIA,
+            country: Country.LITHUANIA,
+            phoneNumber
+          });
           await submitOrder();
         });
       });
