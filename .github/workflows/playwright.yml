@@ -29,7 +29,7 @@ jobs:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     container:
-      image: mcr.microsoft.com/playwright:v1.46.1
+      image: mcr.microsoft.com/playwright:v1.47.0
     env:
       BASE_URL: ${{ secrets.BASE_URL }}
       CART_API_URL: ${{ secrets.CART_API_URL }}
