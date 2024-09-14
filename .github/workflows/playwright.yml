@@ -31,6 +31,7 @@ jobs:
     container:
       image: mcr.microsoft.com/playwright:v1.47.0
     env:
+      TZ: Europe/Vilnius
       BASE_URL: ${{ secrets.BASE_URL }}
       CART_API_URL: ${{ secrets.CART_API_URL }}
     steps:
@@ -38,10 +39,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: lts/*
-
-      - name: Set Time Zone to Vilnius, Europe
-        run: |
-          sudo timedatectl set-timezone Europe/Vilnius
 
       - name: Install dependencies
         run: npm ci --legacy-peer-deps
