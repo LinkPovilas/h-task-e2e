@@ -4,7 +4,6 @@ import { route } from 'data/api/route';
 
 interface ApiRequestFixture {
   createCart: (data: CreateCartPayload) => Promise<APIResponse>;
-  loginWithBasicCredentials: () => Promise<APIResponse>;
 }
 
 export const test = base.extend<ApiRequestFixture>({

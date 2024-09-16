@@ -25,7 +25,6 @@ export const test = base.extend<NavigationFixture>({
   goToWebHostingCartPage: async ({ page, createCart }, use) => {
     await use(async (subscriptionPlan: WebHostingPlan) => {
       const slug = webHostingPlanSlugs.get(subscriptionPlan)!;
-
       const payload: CreateCartPayload = {
         products: [
           {
