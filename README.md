@@ -29,7 +29,6 @@ Example:
 ```Shell
 # .env
 BASE_URL=https://www.your-website.eu
-CART_API_URL=https://checkout.your-website.eu
 ```
 
 # Setup
